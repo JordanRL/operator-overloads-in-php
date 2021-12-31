@@ -62,7 +62,7 @@ $x += 3; // We expect $x to be 5
 $z = $y + 3; // We expect $x to be 6
 ```
 
-Now consider what would *actually* happen if $x behaved like an immutable object:
+Now consider what would *actually* happen if $x behaved like a mutable object:
 
 ```php
 <?php
