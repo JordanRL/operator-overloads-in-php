@@ -171,4 +171,4 @@ It seems like this should work, except... it *won't* add $5, it'll add 5 in what
 
 So couldn't we add a conversion factor for ints and floats? We could. It would have some of the same problems explored in Rule 2, but it's possible. However, that assumes that all developers are programming in the same currency as you. What happens if one of your colleagues thinks in a different currency? What if they get assigned a feature to add a 25 Ruble surcharge, and don't realize that the program assumes all integers are in dollars?
 
-In this case, integers and floats are missing an important dimension: the currency. It's unsafe to assume the intended currency of a particular integer or float. That's in fact the whole *point* of the Money class, to supplament the integer and float types because they don't capture this information.
+In this case, integers and floats are missing an important dimension: the currency. It's unsafe to assume the intended currency of a particular integer or float. That's in fact the whole *point* of the Money class, to supplement the integer and float types because they don't capture this information.
