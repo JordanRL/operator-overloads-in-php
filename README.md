@@ -80,7 +80,7 @@ $x += 3; // $x == 10
 $z = $y + 3; // $x == 14, $y == 14, $z == 14 ($y and $z are references to $x)
 ```
 
-So this is the first rule of operator overloads: you cannot implement them immutably. That means that you cannot have *any* lines in the operator method that look like `$this->property = 'somevalue'`.
+So this is the first rule of operator overloads: you cannot implement them mutably. That means that you cannot have *any* lines in the operator method that look like `$this->property = 'somevalue'`.
 
 The exceptions to this rule should be extremely rare, and should require a great deal of care. If you think you have an exception, you probably don't. Don't violate this rule, people will hate your code for it.
 
