@@ -172,3 +172,54 @@ It seems like this should work, except... it *won't* add $5, it'll add 5 in what
 So couldn't we add a conversion factor for ints and floats? We could. It would have some of the same problems explored in Rule 2, but it's possible. However, that assumes that all developers are programming in the same currency as you. What happens if one of your colleagues thinks in a different currency? What if they get assigned a feature to add a 25 Ruble surcharge, and don't realize that the program assumes all integers are in dollars?
 
 In this case, integers and floats are missing an important dimension: the currency. It's unsafe to assume the intended currency of a particular integer or float. That's in fact the whole *point* of the Money class, to supplement the integer and float types because they don't capture this information.
+
+# Rule 4: Supporting Implied Operators Is Non-Optional
+
+The reassignment operators, such as `+=` and `*=` are referred to as "implied operators" in the RFC. The reason for this is that these operators are optimized within the PHP engine separate from this RFC.
+
+```php
+<?php
+
+$x += 5; // My code contains the reassignment operator
+```
+
+However, the PHP engine actually executes this line as:
+
+```php
+<?php
+
+$x = $x + 5; // The operation that is executed
+```
+
+The two lines are not 100% equivalent, as a different part of the VM is run for both of the lines above. The difference is that for the `$x += 5` line, the engine *first* executes logic that is specific to reassignment operators (such as allocating temporary values) and *then* calls the normal opcode for the `+` operator.
+
+This is also the case for post-increment and pre-increment, `++$x` and `$x++`. In these lines, the engine *first* executes code that is specific to the increment and *then* calls the normal operator. For the post-increment line, it sets the return value of the line *before* calling the normal operator, while for the pre-increment line it sets it after.
+
+All of the operators that are listed under "implied operators" are non-optional. Not only is there no way to overload the normal operators *without* overloading the coresponding implied operators, but doing so would involve removing or significantly altering many optimizations within the PHP engine that are unrelated to operator overloads.
+
+Because of this, you must design your operator overloads with the understanding that you cannot prevent the implied operators from being supported if you support the associated normal operator.
+
+# Rule 5: Operands Are Never Passed By Reference
+
+Lets look at a usage of the operator overloads that would probably be contraversial among many PHP developers:
+
+```php
+<?php
+
+$item = new Item();
+$queue = new Queue();
+
+$queue = $queue << $item;
+```
+
+This code attempts to use the bitwise shift left operator to put an item into a queue. If you did something like this, it would follow that you could use the bitwise shift right operator to pull the next item out of the queue.
+
+```php
+<?php
+
+$queue = $queue >> $nextItem;
+```
+
+There are several problems with this usage of operator overloads. First, the operator's meaning is reversed if the queue is on the right instead of the left: `$queue >> $item` vs. `$item >> $queue`. Second, you cannot pass the `$other` parameter of the operator overload by-reference, making it difficult to assign values to the variable. Third, it is very difficult to implement this behavior without violating Rule 1.
+
+In general, if you need to operate on the *reference* of the other operand, you are probably using operator overloads incorrectly as designed in this RFC.
