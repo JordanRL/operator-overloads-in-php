@@ -199,6 +199,8 @@ All of the operators that are listed under "implied operators" are non-optional.
 
 Because of this, you must design your operator overloads with the understanding that you cannot prevent the implied operators from being supported if you support the associated normal operator.
 
+**NOTE**: By not accepting integers in the operator overload, you can cause the `++$x` and `$x++` lines to result in an error. 
+
 # Rule 5: Operands Are Never Passed By Reference
 
 Lets look at a usage of the operator overloads that would probably be contraversial among many PHP developers:
