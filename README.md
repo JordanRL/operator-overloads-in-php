@@ -225,3 +225,52 @@ $queue = $queue >> $nextItem;
 There are several problems with this usage of operator overloads. First, the operator's meaning is reversed if the queue is on the right instead of the left: `$queue >> $item` vs. `$item >> $queue`. Second, you cannot pass the `$other` parameter of the operator overload by-reference, making it difficult to assign values to the variable. Third, it is very difficult to implement this behavior without violating Rule 1.
 
 In general, if you need to operate on the *reference* of the other operand, you are probably using operator overloads incorrectly as designed in this RFC.
+
+# Rule 6: Inherited Operators May Cause Trouble
+
+Having operator implementations which are used by child classes may lead to unexpected results. Because of this, it is suggested that operator implementations which are *intended* for inheritance use the `abstract` keyword and leave the implementation up to child classes. Consider the following:
+
+```php
+<?php
+
+class Number {
+  public function __construct(public $value) {}
+  
+  operator +(Number $other, OperandPosition $operandPos): Number {
+    return new Number(bcadd($this->value + $other->value));
+  }
+}
+
+class Fraction extends Number {
+  public function __construct(public $numerator, public $denominator) {}
+}
+```
+
+In the above example, the `Fraction` class extends `Number`, since it is in fact a kind of number. However, the way in which it adds to other numbers is different. It needs to first find a common denominator (probably through some implementation of a Least Common Multiple), add the numerators, and then reduce the fraction (probably through some implemntation of a Greatest Common Divisor).
+
+We could fix this by giving `Fraction` its own implementation:
+
+```php
+<?php
+
+class Fraction extends Number {
+  operator +(Number $other, OperandPosition $operandPos): Number {
+    $otherNumerator = $other->numerator;
+    $otherDenominator = $other->denominator;
+    
+    // Do fraction conversions, add numerators, reduce fraction
+    
+    return new Fraction($newNumerator, $newDenominator);
+  }
+}
+```
+
+However, what happens if we end up with a line like this?
+
+```php
+<?php
+
+$answer = $number + $fraction;
+```
+
+We'll still get the wrong answer, because the operator overload for the `Number` class will be checked first, as it's the left operand. There is a planned follow-up RFC, "Polymorphic Operator Handler Resolution" that aims to solve this. It would call the `Fraction` overload first, since it is a child class of `Number`. 
