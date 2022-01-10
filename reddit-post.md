@@ -118,7 +118,7 @@ Detailed feedback often comes only once voting happens, and sometimes only throu
 
 # Build Consensus
 
-One of the things I was told multiple times is that you're supposed to build consensus before voting happens. "Voting is not a way to build consensus". This might seem... odd. In fact, I think it kind of is. The idea behind it is sound. If you're going to change the language somehow, it's better to build a discussion based consensus prior to voting instead of opening voting and then it barely gets included with some voters feeling blindsighted.
+One of the things I was told multiple times is that you're supposed to build consensus before voting happens. "Voting is not a way to build consensus". This might seem... odd. In fact, I think it kind of is. The idea behind it is sound, though. If you're going to change the language somehow, it's better to build a discussion based consensus prior to voting instead of opening voting and then it barely gets included with some voters feeling blindsighted.
 
 Your main blocker to building consensus is going to be that many of the people you need to build consensus *with* just don't respond to messages. Perhaps they do respond to people that they recognize as "frequent contributors" to the project, I don't know. So your only realistic path forward is to find someone in the project that will both:
 
