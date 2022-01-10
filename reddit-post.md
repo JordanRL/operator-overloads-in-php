@@ -103,7 +103,7 @@ So you could stop here and move on to the next step: putting your RFC on the mai
 
 In general I would suggest trying to get what's called a "playable commit" done though, if you can. This is a commit where the feature you are describing works, even if a few other things are broken. For instance, it's not critical that all tests pass if the failures are in unrelated areas such as opcache.
 
-A playable commit means that voters can check out a build your changes, then write PHP and see exactly how it behaves. They can test it and play with it.
+A playable commit means that voters can check out and build your changes, then write PHP and see exactly how it behaves. They can test it and play with it.
 
 # Open Discussion
 
