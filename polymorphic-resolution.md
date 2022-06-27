@@ -51,7 +51,7 @@ $number = new Number(5);
 $fraction = new Fraction(5, 8);
 
 // All operators evaluated left-to-right
-// Unless the right-hand operator is a subcless of the left-hand operator
+// Unless the right-hand operator is a subclass of the left-hand operator
 
 $result = $number + $fraction; // $result is Fraction(45, 8), since the fraction implementation knows how to convert its parent class
 $result = $fraction + $number; // $result is Fraction(45, 8), since the fraction implementation knows how to convert its parent class
