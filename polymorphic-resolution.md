@@ -23,6 +23,8 @@ class Fraction extends Number {
     
     $result = new Fraction($newNumerator, $newDenominator);
     $result = $result->reduce();
+    
+    return $result;
   }
 }
 ```
